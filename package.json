@@ -8,8 +8,11 @@
     "build": "sucrase ./src -d ./dist --transforms typescript,imports"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/fs-extra": "^8.0.1",
     "@types/node": "^13.7.0",
+    "@types/puppeteer": "^2.0.0",
+    "@types/slug": "^0.9.1",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "eslint": "^6.8.0",
@@ -18,8 +21,9 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@types/puppeteer": "^2.0.0",
+    "axios": "^0.19.2",
     "fs-extra": "^8.1.0",
-    "puppeteer": "^2.1.0"
+    "puppeteer": "^2.1.0",
+    "slug": "^2.1.1"
   }
 }

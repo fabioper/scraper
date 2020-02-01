@@ -1,8 +1,9 @@
-import { FolderResource } from "./FolderResource";
+/* eslint-disable max-statements */
+import { FolderResource } from './FolderResource'
+import { FileResource } from './FileResource'
+import { FileSearcher } from './FileSearcher'
+import puppeeteer from 'puppeteer'
 
+(async (): Promise<void> => {
 
-(async () => {
-    const novidades = await new FolderResource(/* Folder name */).ensureItWasCreated()
-    const boletins = new FolderResource(/* Folder name */)
-    await novidades.append(boletins)
-})();
+})()
