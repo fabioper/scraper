@@ -46,7 +46,7 @@ export class Browser {
         await this.paginate(nextSelector, cb)
     }
 
-    public searchForResourcesUsing(options: SearcherOptions): Promise<FileResource[]> {
+    public find(options: SearcherOptions): Promise<FileResource[]> {
         const searcher = new FileSearcher(this.page, options)
         return searcher.find()
     }
