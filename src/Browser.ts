@@ -1,6 +1,8 @@
 import puppeteer, { LaunchOptions, Page } from 'puppeteer'
+import url from 'url'
 import { FileSearcher } from './FileSearcher'
 import { FileResource } from './FileResource'
+import chalk from 'chalk'
 
 type SearcherOptions = { wrapper: string; name: string; path: string; attr: string }
 
@@ -20,16 +22,19 @@ export class Browser {
         this.page = await this.browser.newPage()
     }
 
-    public async redirect(path: string): Promise<void> {
+    public async navigate(path: string): Promise<void> {
+        console.log(`\n\nNavigating to: ${chalk.cyanBright(path)}`)
         await this.page.goto(`${this.baseUrl}${path}`)
     }
 
-    public async navigate(nextSelector: string, cb: Function): Promise<void> {
+    public async paginate(nextSelector: string, cb: Function): Promise<void> {
         const nextElement = await this.page.$(nextSelector)
-
-        if (!nextElement) { return }
+        const currentPage = url.parse(this.page.url()).pathname
+        console.log(`\n\nNavigating to: ${chalk.green(currentPage)}`)
 
         await cb(this.page)
+
+        if (!nextElement) { return }
 
         await Promise.all([
             this.page.waitForNavigation(),
@@ -38,7 +43,7 @@ export class Browser {
             })()
         ])
 
-        await this.navigate(nextSelector, cb)
+        await this.paginate(nextSelector, cb)
     }
 
     public searchForResourcesUsing(options: SearcherOptions): Promise<FileResource[]> {
