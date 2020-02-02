@@ -18,6 +18,7 @@ export class FileSearcher {
     }
 
     public async find(): Promise<FileResource[]> {
+        console.log('Searching for files...')
         const wrappers = await this.page.$$(`${this.selector.wrapper}`)
         const files = []
 
@@ -30,6 +31,7 @@ export class FileSearcher {
             ))
         }
 
+        console.log(`∷ ${wrappers.length} resources were found.\n\n`)
         return files
     }
 

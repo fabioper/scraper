@@ -2,54 +2,45 @@ import fs from 'fs-extra'
 import path from 'path'
 import { Resource } from './Resource'
 import { FileResource } from './FileResource'
-import { FileSearcher } from './FileSearcher'
+import chalk from 'chalk'
 
 export class FolderResource extends Resource {
-    name: string;
-    private _path: string;
+    private readonly name: string;
+    private path: string;
 
     constructor(name: string) {
         super()
         this.name = name
-        this.append = this.append.bind(this)
-    }
-
-    get path(): string {
-        return this._path
     }
 
     public async ensureItWasCreated(dir?: string): Promise<FolderResource> {
-        this._path = dir || path.resolve(__dirname, '..', 'dest', this.name)
+        this.path = dir || path.resolve(__dirname, '..', this.name)
+
+        console.log(`Creating a new folder at: ${chalk.dim(this.path)}`)
 
         try {
             await fs.ensureDir(path.resolve(this.path))
+            console.log(`${chalk.green('✓')} Folder ${chalk.cyan(this.name)} successfully created.\n\n`)
             return this
         } catch(e) {
             console.error(e)
         }
     }
 
-    public async append(resource: Resource): Promise<Resource> {
-        if (resource instanceof FolderResource) {
-            await this.appendFolder(resource)
-        }
-
-        if (resource instanceof FileResource) {
-            await resource.download(this.path)
-        }
-
-        return resource
+    public async appendTo(resource: FolderResource): Promise<FolderResource> {
+        await this.ensureItWasCreated(path.resolve(resource.path, this.name))
+        return this
     }
 
-    public async searchForResourcesUsing(searcher: FileSearcher): Promise<FileResource[]> {
-        return searcher.find()
-    }
-
-    private async appendFolder(resource: FolderResource) {
-        try {
-            await resource.ensureItWasCreated(path.resolve(this.path, resource.name))
-        } catch(e) {
-            console.error(e)
+    public async downloadResources(resources: FileResource[]): Promise<FolderResource> {
+        for (const resource of resources) {
+            try {
+                await resource.download(this.path)
+            } catch (e) {
+                console.error(chalk.red(e.message))
+            }
         }
+
+        return this
     }
 }

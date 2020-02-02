@@ -1,8 +1,8 @@
 import axios from 'axios'
 import fs from 'fs-extra'
 import path from 'path'
-import slug from 'slug'
 import { Resource } from './Resource'
+import chalk from 'chalk'
 
 export class FileResource extends Resource {
     name: string;
@@ -14,10 +14,15 @@ export class FileResource extends Resource {
         this.path = path
     }
 
-    async download(dest: string, format: string): Promise<void> {
-        const request = await axios.get(this.path, { responseType: 'arraybuffer' })
-        const data = await request.data
-        console.log(`Downloading => ${this.name}\nat: ${dest}\n\n`)
-        await fs.writeFile(path.resolve(dest, this.name), data)
+    async download(dest: string): Promise<void> {
+        try {
+            console.log(`Downloading: ${chalk.cyan(this.name)} at: ${chalk.dim(dest)}`)
+            const request = await axios.get(this.path, { responseType: 'arraybuffer' })
+            const data = await request.data
+            await fs.writeFile(path.resolve(dest, this.name), data)
+            console.log(`${chalk.green('✓')} File ${chalk.cyan(this.name)} sucessfully downloaded.`)
+        } catch(e) {
+            console.error(e)
+        }
     }
 }

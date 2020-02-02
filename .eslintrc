@@ -14,6 +14,7 @@
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "plugins": ["@typescript-eslint"],
     "rules": {
+        "@typescript-eslint/no-use-before-define": "off",
         "accessor-pairs": "error",
         "array-bracket-newline": [
             "error",
@@ -96,7 +97,7 @@
         "no-this-before-super": "warn",
         "no-trailing-spaces": "error",
         "no-unneeded-ternary": "warn",
-        "no-use-before-define": "error",
+        "no-use-before-define": "off",
         "no-useless-computed-key": "error",
         "no-useless-constructor": "error",
         "no-useless-return": "warn",
