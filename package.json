@@ -22,7 +22,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chalk": "^3.0.0",
     "fs-extra": "^8.1.0",
     "puppeteer": "^2.1.0",
